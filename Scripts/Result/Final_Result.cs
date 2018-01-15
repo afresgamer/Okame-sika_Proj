@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 /*
@@ -13,10 +11,29 @@ public class Final_Result : MonoBehaviour {
     Text OrderText;
     [SerializeField, Header("おかめーしか獲得数のテキスト")]
     Text Okame_sika_Text;
+    [SerializeField, Header("ゲームクリア・オーバーのテキスト")]
+    Text ResultText;
+
+    private int over = 0;
 
     void Start () {
         OrderText.text = GameController.instance.ClearOrderCount.ToString();
         Okame_sika_Text.text = DollInput.GetScore.ToString();
+
+        over = PlayerPrefs.GetInt("over");
 	}
 
+    private void Update()
+    {
+        PlayerPrefs.DeleteKey("over");
+
+        if (over == 10)
+        {
+            ResultText.text = "ゲームオーバー…";
+        }
+        else
+        {
+            ResultText.text = "ゲームクリアー！";
+        }
+    }
 }

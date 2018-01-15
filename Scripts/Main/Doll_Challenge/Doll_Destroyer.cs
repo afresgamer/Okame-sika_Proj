@@ -8,7 +8,10 @@ public class Doll_Destroyer : MonoBehaviour
     {
         if(other.gameObject.tag == "Okame-sika")
         {
+            if(other.gameObject.name == "ue" || other.gameObject.name == "pCylinder360" || other.gameObject.name == "AttachPoint")
+            { Destroy(other.gameObject); }
             Destroy(other.gameObject);
+            GameController.instance.RemoveMemory(other.gameObject);
         }
     }
 }

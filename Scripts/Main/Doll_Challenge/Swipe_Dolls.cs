@@ -9,6 +9,8 @@ public class Swipe_Dolls : MonoBehaviour
     private bool Enabled;
     private bool _rotating;
     private float _rot;
+    [Header("スピード")]
+    public float m_Camera_Speed = 1.5f;
 
     void Start()
     {
@@ -34,6 +36,7 @@ public class Swipe_Dolls : MonoBehaviour
             }
             else if (GameController.instance.info == TouchInfo.Ended)
             {
+                _rot = transform.eulerAngles.y + GetAngle(AppUtil.GetTouchPosition());
                 _rotating = false;
             }
             else
@@ -46,7 +49,8 @@ public class Swipe_Dolls : MonoBehaviour
                 return;
             }
 
-            transform.rotation = Quaternion.Euler(0f, _rot - GetAngle(AppUtil.GetTouchPosition()), 0f);
+            transform.rotation = Quaternion.Euler(0f, 
+                _rot - GetAngle(AppUtil.GetTouchPosition()) * m_Camera_Speed, 0f);
         }
     }
 

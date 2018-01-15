@@ -6,7 +6,7 @@ public class GameState : MonoBehaviour {
 
     public static GameState instance;
     //現在のゲーム状態
-    public enum _GameState { Title, Tutorial, Main, Result }
+    public enum _GameState { Title, Tutorial = 1, Main, Result }
     [HideInInspector,Header(("現在のゲーム状態"))]
     public _GameState m_gameState = _GameState.Title;
 
@@ -20,9 +20,18 @@ public class GameState : MonoBehaviour {
         else { Destroy(gameObject); }
     }
 
-    private void Update()
+    public void InitState()
     {
-        Debug.Log(m_gameState);
+        m_gameState = _GameState.Title;
+    }
+
+    public void MainState()
+    {
+        m_gameState = _GameState.Main;
+    }
+    public void TutorialState()
+    {
+        m_gameState = _GameState.Tutorial;
     }
 
 }

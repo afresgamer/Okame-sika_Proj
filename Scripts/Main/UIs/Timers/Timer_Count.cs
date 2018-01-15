@@ -33,9 +33,9 @@ public class Timer_Count : MonoBehaviour {
             {
                 GameController.instance.Timer = 00.00f;
                 GameController.instance.m_Move_Flag = false;
-                GameController.instance.ChangeScene(2);
+                GameController.instance.ChangeScene(3);
                 GameState.instance.m_gameState = GameState._GameState.Result;
-                GameController.instance.Matryoshka_List.Clear();
+                GameController.instance.DeleteMyMemories();
             }
             string _timer = GameController.instance.Timer.ToString("f2");
             string now_timer = _timer.Replace(".", ":");

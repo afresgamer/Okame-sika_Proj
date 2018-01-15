@@ -36,6 +36,20 @@ public class Morning_Night : MonoBehaviour {
                 Time_Zone_text.text = "夜";
             }
         }
-        
+    }
+
+    //ノロイーシカが出現したら夜になる処理
+    public void SetNight()
+    {
+        //ノロイーシカが存在したら夜にする
+        XXX_sika[] XXXsikaS = FindObjectsOfType<XXX_sika>();
+        foreach(var XXXsika in XXXsikaS)
+        {
+            if(XXXsika.matryoshka.dollInput_Type == Matryoshka.DollInput_Type.Spin 
+                || XXXsika.matryoshka.dollInput_Type == Matryoshka.DollInput_Type.Tap)
+            {
+                SunLight.transform.eulerAngles = new Vector3(200, 0, 0);
+            }
+        }
     }
 }

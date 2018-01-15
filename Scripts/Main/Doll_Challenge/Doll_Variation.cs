@@ -1,111 +1,31 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
 
 /*
 中から現れる人形のバリエーション分け
-呪い人形が出てくる確率は1/6
+呪い人形が出てくる確率は1/6(数的に2/3)
 */
 public class Doll_Variation : MonoBehaviour
 {
-    int testStart = 0;
-    int testEnd = 0;
-    public int loop = 0;
+    [Header("マトリョーシカの確率最大値")]
+    public int rand;
+    [Header("マトリョーシカの種類")]
+    public GameObject[] matryosikaS;
 
-    public int rand1;
-    Image button;
-
-    public GameObject test;
-
-    public GameObject noroiPrefab1;
-    public GameObject noroiPrefab2;
-    public GameObject okamePrefab;
-    const int noroisikas = 2;
-    int noroiCount;
-
-    //GameObject NoroiDoll ()
-    //{
-    //    GameObject prefab = null;
-
-    //    if(noroiCount % noroisikas == 0)
-    //    {
-    //        prefab = noroiPrefab1;
-    //    }
-    //    else
-    //    {
-    //        prefab = noroiPrefab2;
-    //    }
-
-    //    noroiCount++;
-
-    //    return prefab;
-    //}
-    //GameObject OkameDoll()
-    //{
-    //    GameObject prefab = null;
-
-    //    prefab = okamePrefab;
-
-    //    return prefab;
-    //}
-
-    //Vector3 DollPosition()
-    //{
-    //    return test.transform.position;
-    //}
-
-    void Start ()
+    private void Start()
     {
-        button = GameObject.Find("test_button").GetComponent<Image>();
+        GameObject XXX_sika = Select_Matryosika();
+        GameObject matryosika = Instantiate(XXX_sika, transform.position, Quaternion.identity);
+        matryosika.name = XXX_sika.name;
+        matryosika.transform.SetParent(transform.parent);
+        matryosika.SetActive(false);
     }
-	
-	void Update ()
+
+    GameObject Select_Matryosika()
     {
-        if(loop == 3)
-        {
-            testEnd = 10;
-        }
-        if(testEnd == 10)
-        {
-            button.gameObject.SetActive(false);
-        }
-	}
-
-    public void PushButton()
-    {
-        if(testStart == 0)
-        {
-            testStart = 10;
-
-            System.Random r = new System.Random();
-            rand1 = r.Next(1, 6);
-            //button.gameObject.SetActive(false);
-        }
-        else if(testStart == 10)
-        {
-            if(loop != 3)
-            {
-                if (rand1 == 1)
-                {
-                    //GameObject noroisika = (GameObject)Instantiate(
-                    //    NoroiDoll(),
-                    //    DollPosition(),
-                    //    Quaternion.identity);
-
-                    testEnd = 10;
-                }
-                else
-                {
-                    //GameObject okamesika = (GameObject)Instantiate(
-                    //    OkameDoll(),
-                    //    DollPosition(),
-                    //    Quaternion.identity);
-
-                    System.Random r = new System.Random();
-                    rand1 = r.Next(1, 6);
-
-                    loop += 1;
-                }
-            }
-        }
+        int randomNum = Random.Range(0, rand);
+        GameObject XXX_sika = matryosikaS[randomNum];
+        XXX_sika.name = matryosikaS[randomNum].name;
+        return matryosikaS[randomNum];
     }
+
 }

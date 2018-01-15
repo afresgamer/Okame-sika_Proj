@@ -2,13 +2,13 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Okame_Order_Controller : MonoBehaviour {
+public class Okame_Order_Controller : MonoBehaviour,IDollInputTypeInterface {
 
     //現在指令数
     private int Now_Order_count = 0;
-    [SerializeField,Header("現在指令数用テキスト")]
+    [SerializeField,Header("現在指令数用テキスト(プランナーはいじらないで)")]
     private Text Order_CountText;
-    [SerializeField,Header("指令内容用テキスト")]
+    [SerializeField,Header("指令内容用テキスト(プランナーはいじらないで)")]
     private Text OrderText;
     //指令データ(難易度簡単、普通、難しい)
     [SerializeField, Header("指令データ(ここを変えると表示内容が変わります)")]
@@ -50,6 +50,9 @@ public class Okame_Order_Controller : MonoBehaviour {
         //メイン状態のときだけ処理
         if(GameState.instance.m_gameState == GameState._GameState.Main)
         {
+            //Debug.Log("Now_Order_count" + Now_Order_count);
+            //Debug.Log("おかめーしか判定してます。");
+            if (!MissionAnimCon.gameObject.activeSelf) { MissionAnimCon.gameObject.SetActive(true); }
             //タイマー
             if (IsTimer)
             {
@@ -81,6 +84,10 @@ public class Okame_Order_Controller : MonoBehaviour {
 
                     break;
             }
+        }else if(GameState.instance.m_gameState == GameState._GameState.Tutorial)
+        {
+            //Debug.Log("チュートリアル中です。");
+            if (MissionAnimCon.gameObject.activeSelf) { MissionAnimCon.gameObject.SetActive(false); }
         }
     }
 
@@ -127,6 +134,11 @@ public class Okame_Order_Controller : MonoBehaviour {
     {
         int length = orderParameter.orderPoint.Length;
         int count = orderParameter.orderPoint[0];
+        //素早くという言葉が先頭についてたらタイマースタート　それ以外は通常判定
+        string order = orderParameter.orderContent;
+        string time_Over = order.Substring(0, 3);
+        if(time_Over == Fast) { IsTimer = true; }
+        if(time_Over != Fast){ IsTimer = false; }
         //入力が一個の場合
         if (length == 1 && num >= count && num2 == 0) { num = 0; return true; }
         //入力が二個の場合
@@ -151,13 +163,16 @@ public class Okame_Order_Controller : MonoBehaviour {
         NowOrder = Get_RandomOrder(OrderS, 0, 2);
         OrderNum = NowOrder.GetOrder_ParameterCount;
         OrderText.text = NowOrder.Order_Parameter[OrderNum].orderContent;
+        MissionAnimCon.AppearOrderAnim(MissionAnimCon.GetComponent<Animator>());
     }
+    //指令決定関数(指令をクリアした場合)
     public void SelectOrder(Order.Order_ParameterS orderParameter)
     {
         Now_Order_count++;
         GameController.instance.ClearOrderCount++;
         Order_CountText.text = Now_Order_count.ToString();
         OrderText.text = orderParameter.orderContent;
+        MissionAnimCon.AppearOrderAnim(MissionAnimCon.GetComponent<Animator>());
     }
     //ランダム指令型選択関数
     public Order Get_RandomOrder(Order[] orderS, int min, int max)
@@ -168,9 +183,9 @@ public class Okame_Order_Controller : MonoBehaviour {
     //タイプ別回数取得関数
     public int TypeOrderCount(Matryoshka.DollInput_Type dollInputType)
     {
-        if(dollInputType == Matryoshka.DollInput_Type.Pakka) { return DollInput.AddPakkaCount; }
-        else if(dollInputType == Matryoshka.DollInput_Type.Spin) { return DollInput.AddSpinCount; }
-        else if(dollInputType == Matryoshka.DollInput_Type.Tap) { return DollInput.AddTapCount; }
+        if(dollInputType == Matryoshka.DollInput_Type.Pakka) { return DollInput.PakkaCount; }
+        else if(dollInputType == Matryoshka.DollInput_Type.Spin) { return DollInput.SpinCount; }
+        else if(dollInputType == Matryoshka.DollInput_Type.Tap) { return DollInput.TapCount; }
         return 0;
     }
 }

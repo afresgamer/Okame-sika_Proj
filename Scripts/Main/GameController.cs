@@ -27,6 +27,8 @@ public class GameController : MonoBehaviour {
     //指令達成数
     [HideInInspector]
     public int ClearOrderCount = 0;
+    [HideInInspector]
+    public YazirusiController[] UIS;
 
     private void Awake()
     {
@@ -42,5 +44,24 @@ public class GameController : MonoBehaviour {
     public void ChangeScene(int num)
     {
         SceneManager.LoadScene(num);
+    }
+
+    //マトリョーシカ管理リストの削除関数
+    public void RemoveMemory(GameObject target)
+    {
+        Matryoshka_List.Remove(target);
+    }
+
+    //マトリョーシカ管理リストの全削除関数
+    public void DeleteMyMemories()
+    {
+        if(Matryoshka_List.Count > 0)
+        {
+            for(int i = 0; i < Matryoshka_List.Count; i++)
+            {
+                Destroy(Matryoshka_List[i]);
+            }
+            Matryoshka_List.Clear();
+        }
     }
 }
